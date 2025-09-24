@@ -1,3 +1,4 @@
+
 import random
 
 vector_a = []
@@ -14,13 +15,16 @@ while True:
     except ValueError:
         print("Por favor ingrese un número válido.")
 
-def llenar_vector_aleatorio(n):
-    """Llena un vector de longitud n con números aleatorios entre -100 y 100."""
-    return [random.randint(-100, 100) for _ in range(n)]
+def llenar_vector_aleatorio(longitud):
+    return [random.randint(-100, 100) for _ in range(longitud)]
 
 def mostrar_vector(vector, nombre):
-    """Muestra un vector con su nombre."""
-    print(f"{nombre}: {vector}")
+    print(f"\n{name_format(nombre)}:")
+    for i, valor in enumerate(vector):
+        print(f"  Posición {i}: {valor}")
+
+def name_format(nombre):
+    return f"Contenido de {nombre}"
 
 while True:
     print("\n--- MENÚ ---")
@@ -40,22 +44,19 @@ while True:
         vector_b = llenar_vector_aleatorio(n)
         print("Vector B llenado exitosamente.")
     elif opcion == "3":
-        if not vector_a or not vector_b:
-            print("Debe llenar primero los vectores A y B.")
+        if len(vector_a) != n or len(vector_b) != n:
+            print("Debe llenar primero los vectores A y B con la longitud correcta.")
         else:
             vector_c = [vector_a[i] + vector_b[i] for i in range(n)]
             print("Vector C = A + B calculado correctamente.")
     elif opcion == "4":
-        if not vector_a or not vector_b:
-            print("Debe llenar primero los vectores A y B.")
+        if len(vector_a) != n or len(vector_b) != n:
+            print("Debe llenar primero los vectores A y B con la longitud correcta.")
         else:
             vector_c = [vector_b[i] - vector_a[i] for i in range(n)]
             print("Vector C = B - A calculado correctamente.")
     elif opcion == "5":
-        if not vector_a and not vector_b and not vector_c:
-            print("No hay vectores para mostrar.")
-            continue
-        eleccion = input("Qué vector desea mostrar? (A/B/C): ").upper()
+        eleccion = input("¿Qué vector desea mostrar? (A/B/C): ").upper()
         if eleccion == "A":
             if vector_a:
                 mostrar_vector(vector_a, "Vector A")
@@ -70,7 +71,7 @@ while True:
             if vector_c:
                 mostrar_vector(vector_c, "Vector C")
             else:
-                print("Vector C no ha sido calculado aún. Primero use la opción 3 o 4.")
+                print("Vector C no ha sido calculado aún. Use la opción 3 o 4.")
         else:
             print("Opción inválida.")
     elif opcion == "6":
