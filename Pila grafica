@@ -1,0 +1,84 @@
+import tkinter as tk
+from tkinter import messagebox
+
+class PilaGrafica:
+    def __init__(self, root):
+        self.pila = []
+
+        root.title("📦 Pila Gráfica en Python")
+        root.geometry("400x500")
+        root.resizable(False, False)
+
+        # --- Entrada para el elemento ---
+        self.label = tk.Label(root, text="Elemento a apilar:")
+        self.label.pack(pady=5)
+
+        self.entry = tk.Entry(root, font=("Arial", 14))
+        self.entry.pack(pady=5)
+
+        # --- Botones ---
+        btn_frame = tk.Frame(root)
+        btn_frame.pack(pady=10)
+
+        self.btn_push = tk.Button(btn_frame, text="Apilar (Push)", command=self.push, width=15, bg="#4CAF50", fg="white")
+        self.btn_push.grid(row=0, column=0, padx=5, pady=5)
+
+        self.btn_pop = tk.Button(btn_frame, text="Desapilar (Pop)", command=self.pop, width=15, bg="#F44336", fg="white")
+        self.btn_pop.grid(row=0, column=1, padx=5, pady=5)
+
+        self.btn_cima = tk.Button(btn_frame, text="Ver cima", command=self.ver_cima, width=15, bg="#2196F3", fg="white")
+        self.btn_cima.grid(row=1, column=0, padx=5, pady=5)
+
+        self.btn_mostrar = tk.Button(btn_frame, text="Mostrar pila", command=self.mostrar, width=15, bg="#9C27B0", fg="white")
+        self.btn_mostrar.grid(row=1, column=1, padx=5, pady=5)
+
+        # --- Área de salida ---
+        self.salida = tk.Text(root, width=35, height=15, font=("Consolas", 12))
+        self.salida.pack(pady=10)
+
+        self.actualizar_pila()
+
+    def push(self):
+        elemento = self.entry.get().strip()
+        if elemento == "":
+            messagebox.showwarning("Atención", "Debe ingresar un elemento para apilar.")
+            return
+        self.pila.append(elemento)
+        self.entry.delete(0, tk.END)
+        self.actualizar_pila()
+
+    def pop(self):
+        if not self.pila:
+            messagebox.showerror("Error", "La pila está vacía. No se puede desapilar.")
+            return
+        eliminado = self.pila.pop()
+        messagebox.showinfo("Elemento desapilado", f"Se desapiló: {eliminado}")
+        self.actualizar_pila()
+
+    def ver_cima(self):
+        if not self.pila:
+            messagebox.showinfo("Cima", "La pila está vacía.")
+        else:
+            messagebox.showinfo("Cima de la pila", f"Cima: {self.pila[-1]}")
+
+    def mostrar(self):
+        if not self.pila:
+            messagebox.showinfo("Pila vacía", "No hay elementos en la pila.")
+        else:
+            contenido = "\n".join(reversed(self.pila))
+            messagebox.showinfo("Contenido de la pila", f"Pila (de arriba a abajo):\n\n{contenido}")
+
+    def actualizar_pila(self):
+        self.salida.delete("1.0", tk.END)
+        self.salida.insert(tk.END, "📦 PILA ACTUAL 📦\n\n")
+        if not self.pila:
+            self.salida.insert(tk.END, "[ Pila vacía ]")
+        else:
+            for elemento in reversed(self.pila):
+                self.salida.insert(tk.END, f"🔹 {elemento}\n")
+
+# --- Ejecutar ---
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = PilaGrafica(root)
+    root.mainloop()
